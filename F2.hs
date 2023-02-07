@@ -48,6 +48,17 @@ molseqs2profile s ms = Profile m pt ns pn
     pn = s 
 
 profileName :: Profile -> String
+profileName (Profile _ _ _ pn) = pn
+
+profileFrequency :: Profile -> Int -> Char -> Double
+profileFrequency (Profile m _ _ _) i c = snd((findLetter m c) !! i)
+
+findLetter :: [[(Char, Double)]] -> Char -> [(Char, Double)]
+findLetter [] c = []
+findLetter [x:xs] a = if (fst(x) == a)
+    then [x]
+    else findLetter [xs] a
+
 
 
 seqType :: MolSeq -> String
@@ -84,3 +95,5 @@ main = do
     let mol5 = string2seq "mol5" "ACGTAA"
     let profiltest = molseqs2profile "profiltest" [mol1, mol2, mol3, mol4, mol5]
     print(profiltest)
+    print(profileName(profiltest))
+    print(profileFrequency profiltest 0 'A')
