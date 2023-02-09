@@ -51,13 +51,13 @@ profileName :: Profile -> String
 profileName (Profile _ _ _ pn) = pn
 
 profileFrequency :: Profile -> Int -> Char -> Double
-profileFrequency (Profile m _ _ _) i c = snd((findLetter m c) !! i)
+profileFrequency (Profile m _ _ _) i c = snd((findLetter (transpose m) c) !! i)
 
 findLetter :: [[(Char, Double)]] -> Char -> [(Char, Double)]
 findLetter [] c = []
-findLetter [x:xs] a = if (fst(x) == a)
-    then [x]
-    else findLetter [xs] a
+findLetter (x:xs) a = if (fst(x!!0) == a)
+    then x
+    else findLetter xs a
 
 
 
@@ -96,4 +96,4 @@ main = do
     let profiltest = molseqs2profile "profiltest" [mol1, mol2, mol3, mol4, mol5]
     print(profiltest)
     print(profileName(profiltest))
-    print(profileFrequency profiltest 0 'A')
+    print(profileFrequency profiltest 4 'T')
