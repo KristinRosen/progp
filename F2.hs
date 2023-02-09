@@ -47,6 +47,7 @@ molseqs2profile s ms = Profile m pt ns pn
     ns = length(ms) 
     pn = s 
 
+-----3.3--------------
 profileName :: Profile -> String
 profileName (Profile _ _ _ pn) = pn
 
@@ -59,7 +60,17 @@ findLetter (x:xs) a = if (fst(x!!0) == a)
     then x
     else findLetter xs a
 
+-----3.4------------
+profileDistance :: Profile -> Profile -> Double
+profileDistance (Profile [] _ _ _) (Profile [] _ _ _) = 0
+profileDistance (Profile m a b c) (Profile n d e f) = (sumrow x y) + profileDistance (Profile xs a b c) (Profile ys d e f)
+    where 
+        x:xs = m
+        y:ys = n
 
+sumrow :: [(Char, Double)] -> [(Char, Double)] -> Double
+sumrow [] [] = 0
+sumrow (x:xs) (y:ys) = abs(snd(x)-snd(y)) + (sumrow xs ys)
 
 seqType :: MolSeq -> String
 seqType (DNA _ _) = "DNA"
@@ -93,7 +104,11 @@ main = do
     let mol3 = string2seq "mol3" "ACGTGC"
     let mol4 = string2seq "mol4" "AAGTTC"
     let mol5 = string2seq "mol5" "ACGTAA"
+    let mol6 = string2seq "mol6" "GGGGGG"
     let profiltest = molseqs2profile "profiltest" [mol1, mol2, mol3, mol4, mol5]
+    let p2 = molseqs2profile "p2" [mol6, mol6, mol6, mol6, mol6]
+    let p3 = molseqs2profile "p3" [mol1, mol1, mol1, mol1, mol1]
     print(profiltest)
     print(profileName(profiltest))
     print(profileFrequency profiltest 4 'T')
+    print(profileDistance p2 p3) 
